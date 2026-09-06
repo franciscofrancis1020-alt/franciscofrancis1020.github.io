@@ -37,7 +37,7 @@
 .linea-destello {
     position: absolute;
     top: 0;
-    left: 0%;
+    left: -45%;
     width: 30px;
     height: 100%;
     background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.9) 50%, transparent);
@@ -53,10 +53,10 @@
 
 @keyframes barridoLuz {
     0% {
-        transform: skewX(-25deg) translateX(-50px);
+        transform: skewX(-25deg) translateX(-300vw);
     }
     100% {
-        transform: skewX(-25deg) translateX(calc(100vw, + 50px));
+        transform: skewX(-25deg) translateX(1000vw);
     }
 }
 
