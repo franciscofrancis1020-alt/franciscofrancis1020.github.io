@@ -66,7 +66,7 @@
       opacity: 1;
   }
   100% {
-      transform: skewX(-15deg) translateX(95vw); /* Mismo ángulo (-15deg) */
+      transform: skewX(-15deg) translateX(300vw); /* Mismo ángulo (-15deg) */
       opacity: 0;
   }
 }
