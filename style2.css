@@ -37,9 +37,9 @@
 .linea-destello {
     position: absolute;
     top: -5px;
-    left: -200px;
-    width: 50px;
-    height: 115%;
+    left: -150px;
+    width: 30px;
+    height: 120%;
     background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.9) 50%, transparent);
     transform: skewX(-25deg) translateX(-100px);
     pointer-events: none;
