@@ -53,10 +53,10 @@
 
 @keyframes barridoLuz {
     0% {
-        transform: skewX(-25deg) translateX(-100vw);
+        transform: skewX(-25deg) translateX(-50px);
     }
     100% {
-        transform: skewX(-25deg) translateX(200vw);
+        transform: skewX(-25deg) translateX(calc(100vw, + 50px));
     }
 }
 
