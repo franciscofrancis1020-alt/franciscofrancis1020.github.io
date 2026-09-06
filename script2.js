@@ -4,144 +4,185 @@ if (transicionTipo === 'reload') {
     window.location.href = "index.html";
 }
 
-let intervaloPetalos = null;
-let intervaloMariposas = null;
-let cachedHeight = window.innerHeight;
+const canvas = document.getElementById("lienzoMatrix");
+const ctx = canvas.getContext("2d");
 
-window.addEventListener('resize', () => {
-    cachedHeight = window.innerHeight;
+let ancho = (canvas.width = window.innerWidth);
+let alto = (canvas.height = window.innerHeight);
+
+const tamanoFuente = 14;
+const columnas = Math.floor(ancho / tamanoFuente);
+const caidaY = Array(columnas).fill(1);
+
+// Fusionamos el nombre y los números en un solo bloque continuo místico
+const palabraMatrix = ["D", "I", "A", "N", "I", "T", "A", "2", "5", "5"];
+
+// Decidimos qué columnas llevan el mensaje especial y cuáles el código base
+const tipoColumna = Array(columnas).fill(0).map(() => {
+    return Math.random() > 0.75 ? "especial" : "binario"; 
 });
 
-function iniciarSecuenciaCampo() {
-    setTimeout(() => {
-        crearLluviaDePetalos();
-    }, 11000);
+function dibujarMatrix() {
+    // Rastro ultra sutil para que se vea el efecto de velocidad supersónica
+    ctx.fillStyle = "rgba(11, 15, 25, 0.06)";
+    ctx.fillRect(0, 0, ancho, alto);
 
-    setTimeout(() => {
-        iniciarBucleMariposas();
-    }, 13000);
-}
-
-function crearLluviaDePetalos() {
-    const contenedor = document.getElementById('contenedor-petalos');
-    if (!contenedor) return; 
-
-    const tonosRosa = ['#ff4b72', '#ff6b8b', '#ff8fa3', '#ffb3c1'];
-
-    intervaloPetalos = setInterval(() => {
-        const petalo = document.createElement('div');
-        petalo.classList.add('petalo');
-
-        const tamano = Math.random() * 13 + 12;
-        petalo.style.width = `${tamano}px`;
-        petalo.style.height = `${tamano}px`;
+    for (let i = 0; i < caidaY.length; i++) {
+        let texto = "";
+        const yActual = caidaY[i];
         
-        // Inicia incluso fuera de los bordes (-10% a 110%) para que el viento los meta a la pantalla
-        const posicionInicialX = Math.random() * 120 - 10;
-        petalo.style.left = `${posicionInicialX}%`;
+        if (tipoColumna[i] === "especial") {
+            // Lee la cadena DIANITA255 en orden vertical perfecto y repetitivo
+            texto = palabraMatrix[yActual % palabraMatrix.length];
+            ctx.fillStyle = "rgba(255, 60, 90, 0.65)"; // Resaltado brillante para el nombre
+            ctx.font = `600 ${tamanoFuente}px -apple-system, BlinkMacSystemFont, sans-serif`;
+        } else {
+            // Código binario tradicional de fondo
+            texto = Math.random() > 0.5 ? "0" : "1";
+            ctx.fillStyle = "rgba(255, 42, 75, 0.22)"; 
+            ctx.font = `300 ${tamanoFuente}px -apple-system, BlinkMacSystemFont, sans-serif`;
+        }
 
-        const duracion = Math.random() * 5 + 5;
-        petalo.style.animationDuration = `${duracion}s`;
+        const x = i * tamanoFuente;
+        const y = yActual * tamanoFuente;
 
-        // Genera una oscilación lateral única para que el viento los mueva hacia los lados de forma aleatoria
-        const fuerzaVientoX = Math.random() * 80 + 40; 
-        petalo.style.setProperty('--viento-x', `${fuerzaVientoX}px`);
+        ctx.fillText(texto, x, y);
 
-        const colorAleatorio = tonosRosa[Math.floor(Math.random() * tonosRosa.length)];
-        petalo.style.background = `linear-gradient(135deg, ${colorAleatorio}, #fff0f3)`;
-
-        petalo.addEventListener('animationend', () => {
-            petalo.remove();
-        }, { once: true });
-
-        contenedor.appendChild(petalo);
-    }, 600); // Ritmo intermedio perfecto y constante
-}
-
-function iniciarBucleMariposas() {
-    const contenedor = document.getElementById('contenedor-mariposas');
-    if (!contenedor) return;
-
-    for (let i = 0; i < 4; i++) {
-        setTimeout(() => {
-            crearUnaMariposa();
-        }, i * 1500);
+        if (y > alto && Math.random() > 0.975) {
+            caidaY[i] = 0;
+            tipoColumna[i] = Math.random() > 0.75 ? "especial" : "binario";
+        }
+        caidaY[i]++;
     }
-
-    intervaloMariposas = setInterval(() => {
-        crearUnaMariposa();
-    }, 3500);
 }
 
-function crearUnaMariposa() {
-    const contenedor = document.getElementById('contenedor-mariposas');
-    if (!contenedor) return;
+// Bucle a máxima velocidad nativa sin frenos (120Hz puros)
+function bucleMatrix() {
+    dibujarMatrix();
+    requestAnimationFrame(bucleMatrix);
+}
 
-    const mariposa = document.createElement('div');
-    mariposa.classList.add('mariposa');
+window.addEventListener("resize", () => {
+    ancho = canvas.width = window.innerWidth;
+    alto = canvas.height = window.innerHeight;
+});
 
-    const alaIzq = document.createElement('div');
-    alaIzq.classList.add('ala-izq');
-    
-    const alaDer = document.createElement('div');
-    alaDer.classList.add('ala-der');
-    
-    const cuerpo = document.createElement('div');
-    cuerpo.classList.add('cuerpo-m');
+requestAnimationFrame(bucleMatrix);
 
-    mariposa.appendChild(alaIzq);
-    mariposa.appendChild(alaDer);
-    mariposa.appendChild(cuerpo);
 
-    const alturaTulipanes = cachedHeight - (Math.random() * 180 + 150);
-    mariposa.style.top = `${alturaTulipanes}px`;
+const textoEscena2 = document.getElementById("texto-escena2");
+const corazon3 = document.getElementById("corazon3");
+const frase2 = "Y si este corazon late en mas vidas despues de esta";
+const fraseFinal = "en mundos tan llenos de sorpresas";
 
-    if (Math.random() > 0.5) {
-        mariposa.style.animationName = 'vueloIzquierdaADerecha';
-    } else {
-        mariposa.style.animationName = 'vueloDerechaAIzquierda';
+function escribirTextoAltaFluidez(elemento, texto, tiempoPorLetra, callback) {
+    let indice = 0;
+    elemento.innerHTML = "";
+    let ultimoTiempo = 0;
+
+    function render(tiempoActual) {
+        if (!ultimoTiempo) ultimoTiempo = tiempoActual;
+        const delta = tiempoActual - ultimoTiempo;
+
+        if (delta >= tiempoPorLetra) {
+            if (indice < texto.length) {
+                elemento.innerHTML += texto.charAt(indice);
+                
+                if (indice === 2) mostrarCorazon(1);
+                if (indice === 6) mostrarCorazon(2);
+                if (indice === 10) mostrarCorazon(3);
+                if (indice === 14) mostrarCorazon(4);
+                if (indice === 18) mostrarCorazon(5);
+
+                indice++;
+                ultimoTiempo = tiempoActual;
+            } else {
+                if (callback) setTimeout(callback, 800);
+                return;
+            }
+        }
+        requestAnimationFrame(render);
     }
-
-    const escala = Math.random() * 0.3 + 0.65;
-    mariposa.style.transform = `scale(${escala})`;
-
-    const duracion = Math.random() * 2 + 8; 
-    mariposa.style.animationDuration = `${duracion}s`;
-
-    contenedor.appendChild(mariposa);
-
-    mariposa.addEventListener('animationend', () => {
-        mariposa.remove();
-    }, { once: true });
+    requestAnimationFrame(render);
 }
 
-function activarClicTulipanEspecial() {
-    const tulipan = document.getElementById('tulipan-turquesa');
-    if (!tulipan) return;
+function mostrarCorazon(numero) {
+    const corazon = document.getElementById(`corazon${numero}`);
+    if (corazon) {
+        corazon.classList.add("visible");
+    }
+}
 
-    const eventos = ['touchstart', 'click'];
+function transformarTurquesa() {
+    const destello = document.querySelector(".linea-destello");
+    if (destello) {
+        destello.classList.add("animar");
+    }
+    setTimeout(() => {
+        if (corazon3) {
+            corazon3.classList.add("turquesa");
+            corazon3.addEventListener("click", iniciarFusionPaso5);
+            corazon3.addEventListener("touchstart", iniciarFusionPaso5);
+        }
+    }, 400);
+}
+
+function iniciarFusionPaso5(e) {
+    e.preventDefault();
     
-    eventos.forEach(evento => {
-        tulipan.addEventListener(evento, (e) => {
-            e.preventDefault(); 
-            
-            clearInterval(intervaloPetalos);
-            clearInterval(intervaloMariposas);
+    if (canvas) canvas.style.opacity = "0";
+    
+    // Forzamos que se mantenga el fondo del espacio oscuro de forma permanente
+    document.body.classList.add("fondo-espacio");
 
-            const contenedorEscena = document.querySelector('.pantalla-amanecer-completa');
-            if (contenedorEscena) {
-                contenedorEscena.style.transition = "opacity 1.5s ease-in-out";
-                contenedorEscena.style.opacity = "0";
+    document.getElementById("corazon1").style.transform = "translateX(100px) rotate(-45deg) scale(0)";
+    document.getElementById("corazon2").style.transform = "translateX(50px) rotate(-45deg) scale(0)";
+    document.getElementById("corazon4").style.transform = "translateX(-50px) rotate(-45deg) scale(0)";
+    document.getElementById("corazon5").style.transform = "translateX(-100px) rotate(-45deg) scale(0)";
+    
+    document.getElementById("corazon1").style.opacity = "0";
+    document.getElementById("corazon2").style.opacity = "0";
+    document.getElementById("corazon4").style.opacity = "0";
+    document.getElementById("corazon5").style.opacity = "0";
 
-                contenedorEscena.addEventListener('transitionend', () => {
-                    contenedorEscena.style.display = "none";
-                }, { once: true });
+    setTimeout(() => {
+        if (corazon3) corazon3.style.transform = "rotate(-45deg) scale(0)";
+        
+        const mundo = document.getElementById("mundo");
+        if (mundo) {
+            mundo.className = "mundo-visible";
+        }
+        
+        // Escribimos el texto largo y AL TERMINAR activamos el botón del planeta mundo
+        escribirTextoAltaFluidez(textoEscena2, fraseFinal, 60, () => {
+            if (mundo) {
+                mundo.addEventListener("click", pasarAPaisajeFinal);
+                mundo.addEventListener("touchstart", pasarAPaisajeFinal);
             }
         });
-    });
+    }, 600);
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-    iniciarSecuenciaCampo();
-    activarClicTulipanEspecial();
+function pasarAPaisajeFinal(e) {
+    e.preventDefault();
+    
+    const principal = document.querySelector(".contenedor-principal2");
+    if (principal) {
+        principal.style.transition = "opacity 2s ease-in-out";
+        principal.style.opacity = "0";
+    }
+    
+    document.body.style.transition = "background-color 2s ease-in-out";
+    document.body.style.background = "#ffffff";
+
+    setTimeout(() => {
+        window.location.href = "escena3.html";
+    }, 2000);
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+    setTimeout(() => {
+        escribirTextoAltaFluidez(textoEscena2, frase2, 90, transformarTurquesa);
+    }, 1000);
 });
+
