@@ -37,7 +37,7 @@
 .linea-destello {
     position: absolute;
     top: 0;
-    left: -45%;
+    left: -83px;
     width: 30px;
     height: 100%;
     background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.9) 50%, transparent);
@@ -47,17 +47,28 @@
 }
 
 /* Clase que JavaScript activará para lanzar el destello una sola vez */
+/* Modifica la clase que activa la animación (Línea 47 de tu CSS) */
 .linea-destello.animar {
-    animation: barridoLuz 1.2s ease-in-out forwards;
+    animation: barridoLuz 1.8s ease-in-out forwards; /* Ajusta 1.8s si quieres que vaya más lento */
 }
 
+/* Modifica los Keyframes usando porcentajes del contenedor */
 @keyframes barridoLuz {
-    0% {
-        transform: skewX(-25deg) translateX(-300vw);
-    }
-    100% {
-        transform: skewX(-25deg) translateX(1000vw);
-    }
+  0% {
+      transform: skewX(-25deg) translateX(0);
+      opacity: 0;
+  }
+  10% {
+      opacity: 1; /* Aparece suavemente al arrancar */
+  }
+  85% {
+      opacity: 1; /* Se mantiene brillante cruzando los corazones */
+  }
+  100% {
+      /* Se desplaza suavemente el equivalente a la pantalla y se desvanece */
+      transform: skewX(-25deg) translateX(95vw); 
+      opacity: 0; 
+  }
 }
 
 
