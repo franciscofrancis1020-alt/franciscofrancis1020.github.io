@@ -36,14 +36,15 @@
 /* El rayo de luz brillante que recorrerá del corazón 1 al 5 */
 .linea-destello {
     position: absolute;
-    top: 0;
-    left: -83px;
-    width: 30px;
-    height: 100%;
+    top: -5px;
+    left: -200px;
+    width: 50px;
+    height: 115%;
     background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.9) 50%, transparent);
     transform: skewX(-25deg) translateX(-100px);
     pointer-events: none;
     z-index: 10;
+    transform: skew(-15deg);
 }
 
 /* Clase que JavaScript activará para lanzar el destello una sola vez */
@@ -55,7 +56,7 @@
 /* Modifica los Keyframes usando porcentajes del contenedor */
 @keyframes barridoLuz {
   0% {
-      transform: skewX(-25deg) translateX(0);
+      transform: skewX(-15deg) translateX(0);
       opacity: 0;
   }
   10% {
@@ -66,7 +67,7 @@
   }
   100% {
       /* Se desplaza suavemente el equivalente a la pantalla y se desvanece */
-      transform: skewX(-25deg) translateX(95vw); 
+      transform: skewX(-15deg) translateX(95vw); 
       opacity: 0; 
   }
 }
